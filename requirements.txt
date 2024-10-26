@@ -3,4 +3,6 @@ google-generativeai
 python-dotenv
 plotly
 sqlalchemy
-
+pandas
+pathlib
+openpyxl
