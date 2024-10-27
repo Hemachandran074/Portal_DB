@@ -7,25 +7,6 @@ import google.generativeai as genai
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 #Prompt to sql
-
-def get_gemini_response(question,prompt):
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    response = model.generate_content([prompt[0],question])
-    return response.txt
-
-#sql to DB
-
-def read_sql_query(sql,db):
-    con=sqlite3.connect(db)
-    cur=con.cursor()
-    cur.execute(sql)
-    con.commit()
-
-    for row in rows:
-        print(row)
-    return rows
-
-
 prompt=[
        """
     You are an expert in converting English questions to SQL query!
@@ -47,3 +28,23 @@ prompt=[
 
 
 ]
+
+
+def get_gemini_response(question,prompt=prompt):
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content([prompt[0],question])
+    return response.txt
+
+#sql to DB
+
+def read_sql_query(sql,db):
+    con=sqlite3.connect(db)
+    cur=con.cursor()
+    cur.execute(sql)
+    con.commit()
+
+    for row in rows:
+        print(row)
+    return rows
+
+

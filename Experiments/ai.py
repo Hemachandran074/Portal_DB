@@ -34,6 +34,7 @@ def get_gemini_response(question,prompt = prompt):
     logging.info('getting gemini response')
     model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content([prompt[0],question])
+    print(response.text)
     return response.text
 
 #sql to DB
@@ -51,3 +52,5 @@ def read_sql_query(sql,db):
     return rows
 
 
+def return_dataframe():
+    pass
