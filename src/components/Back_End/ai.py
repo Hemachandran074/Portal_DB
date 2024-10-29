@@ -10,7 +10,8 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 prompt=[
        """
     You are an expert in converting English questions to SQL query!
-    The SQL database has the name STUDENT and has the following columns - NAME, CLASS, 
+    The SQL database has the name output and has the following columns - table1=[s_no, portal_id, register_number, name, department, ctps, l1___score, l2___score, l3___score, l4___score, l5___score, pds, total_score]
+
     SECTION.
 
     Important: 
@@ -19,10 +20,11 @@ prompt=[
 
     For example:
     Example 1 - How many entries of records are present? 
-    SQL command: SELECT COUNT(*) FROM STUDENT;
+    SQL command: SELECT COUNT(*) FROM table1;
 
-    Example 2 - Tell me all the students studying in Data Science class? 
-    SQL command: SELECT * FROM STUDENT WHERE CLASS = 'Data Science';
+    Example 2 - show me student who scored more than 10000 in total_score;
+    SQL command: SELECT * FROM table1 WHERE total_score>10000;
+
 
     """
 
@@ -30,21 +32,22 @@ prompt=[
 ]
 
 
-def get_gemini_response(question,prompt=prompt):
+def get_gemini_response(question,prompt = prompt):
     model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content([prompt[0],question])
-    return response.txt
+    print(response.text)
+    return response.text
 
 #sql to DB
 
 def read_sql_query(sql,db):
+
     con=sqlite3.connect(db)
     cur=con.cursor()
     cur.execute(sql)
+    rows=cur.fetchall()
     con.commit()
 
     for row in rows:
         print(row)
     return rows
-
-
